@@ -1,0 +1,31 @@
+queryId: K8sActivityApiRemoved126
+queryText: |-
+{
+  source {
+    LW_ACT_K8S_AUDIT
+  }
+  filter {
+    EVENT_JSON:requestURI like any(
+      '%/flowcontrol.apiserver.k8s.io/v1beta1/flowschemas%',
+      '%/flowcontrol.apiserver.k8s.io/v1beta1/watch/flowschemas%',
+      '%/autoscaling/v1/namespaces/%/horizontalpodautoscalers%',
+      '%/autoscaling/v1/horizontalpodautoscalers',
+      '%/autoscaling/v1/watch/namespaces/%/horizontalpodautoscalers%',
+      '%/autoscaling/v1/watch/horizontalpodautoscalers') -- API removed in K8s 1.26
+    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+    and USER_NAME <> 'system:apiserver' -- watch objects
+  }
+  return {
+    USER_ID,
+    USER_NAME,
+    USER_GROUPS,
+    CLOUD_USER,
+    EVENT_URI,
+    EVENT_NAME,
+    EVENT_SOURCE,
+    EVENT_OBJECT,
+    CLUSTER_TYPE,
+    CLUSTER_ID
+  }
+}

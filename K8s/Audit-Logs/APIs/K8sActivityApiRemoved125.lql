@@ -1,0 +1,46 @@
+queryId: K8sActivityApiRemoved125
+queryText: |-
+{
+  source {
+    LW_ACT_K8S_AUDIT
+  }
+  filter {
+    EVENT_JSON:requestURI like any(
+      '%/batch/v1beta1/namespaces/%/cronjobs%',
+      '%/batch/v1beta1/cronjobs',
+      '%batch/v1beta1/watch/namespaces/%/cronjobs%',
+      '%/apis/batch/v1beta1/watch/cronjobs',
+      '%/discovery.k8s.io/v1beta1/namespaces/%/endpointslices%',
+      '%/discovery.k8s.io/v1beta1/endpointslices%',
+      '%/discovery.k8s.io/v1beta1/watch/namespaces/%/endpointslices%',
+      '%/discovery.k8s.io/v1beta1/watch/endpointslices',
+      '%/events.k8s.io/v1beta1/%',
+      '%/autoscaling/v2beta1/namespaces/%/horizontalpodautoscalers%',
+      '%/autoscaling/v2beta1/horizontalpodautoscalers%',
+      '%/autoscaling/v2beta1/watch/namespaces/%/horizontalpodautoscalers%',
+      '%/autoscaling/v2beta1/watch/horizontalpodautoscalers%',
+      '%policy/v1beta1/namespaces/%/poddisruptionbudgets%',
+      '%/policy/v1beta1/poddisruptionbudgets',
+      '%/policy/v1beta1/watch/namespaces/%/poddisruptionbudgets%',
+      '%/policy/v1beta1/watch/poddisruptionbudgets',
+      '%/policy/v1beta1/podsecuritypolicies%',
+      '%/policy/v1beta1/watch/podsecuritypolicies%',
+      '%/node.k8s.io/v1beta1/watch/runtimeclasses%',
+      '%/node.k8s.io/v1beta1/runtimeclasses%') -- API removed in K8s 1.25
+    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+    and USER_NAME <> 'system:apiserver' -- watch objects
+  }
+  return {
+    USER_ID,
+    USER_NAME,
+    USER_GROUPS,
+    CLOUD_USER,
+    EVENT_URI,
+    EVENT_NAME,
+    EVENT_SOURCE,
+    EVENT_OBJECT,
+    CLUSTER_TYPE,
+    CLUSTER_ID
+  }
+}

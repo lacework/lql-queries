@@ -1,0 +1,29 @@
+queryId: K8sActivityApiRemoved127
+queryText: |-
+{
+  source {
+    LW_ACT_K8S_AUDIT
+  }
+  filter {
+    EVENT_JSON:requestURI like any(
+      '%/storage.k8s.io/v1beta1/namespaces/%/csistoragecapacities%',
+      '%/storage.k8s.io/v1beta1/csistoragecapacities',
+      '%/storage.k8s.io/v1beta1/watch/namespaces/%/csistoragecapacities%',
+      '%/storage.k8s.io/v1beta1/watch/csistoragecapacities') -- APIs removed in K8s 1.27
+    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+    and USER_NAME <> 'system:apiserver' -- watch objects
+  }
+  return {
+    USER_ID,
+    USER_NAME,
+    USER_GROUPS,
+    CLOUD_USER,
+    EVENT_URI,
+    EVENT_NAME,
+    EVENT_SOURCE,
+    EVENT_OBJECT,
+    CLUSTER_TYPE,
+    CLUSTER_ID
+  }
+}

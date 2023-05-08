@@ -1,0 +1,25 @@
+queryId: K8sActivityApiDeprecated124
+queryText: |-
+{
+  source {
+    LW_ACT_K8S_AUDIT
+  }
+  filter {
+    EVENT_JSON:requestURI like any('%kubeadm.k8s.io/v1beta2/%', '%/csistoragecapacity.storage.k8s.io/v1beta1/%')
+    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+    and USER_NAME <> 'system:apiserver' -- watch objects
+  }
+  return {
+    USER_ID,
+    USER_NAME,
+    USER_GROUPS,
+    CLOUD_USER,
+    EVENT_URI,
+    EVENT_NAME,
+    EVENT_SOURCE,
+    EVENT_OBJECT,
+    CLUSTER_TYPE,
+    CLUSTER_ID
+  }
+}
