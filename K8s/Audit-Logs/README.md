@@ -19,6 +19,6 @@ To run the query, and to modify them, do the following:
     lacework query create -f K8s/Audit-Logs/APIs/K8sActivityApiDeprecated123.lql
     lacework query run K8sActivityApiDeprecated123 --start "-1w@w" --end "@w"
 
-For more information about LQL, check the [https://docs.lacework.com/lql/lql-overview](LQL overview).
+For more information about LQL, check the [LQL overview](https://docs.lacework.com/lql/lql-overview).
 
 PRs for new queries are welcome!

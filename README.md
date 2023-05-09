@@ -4,8 +4,8 @@ This is a repository of LQL queries that shows how to track events or configurat
 
 This repository is organized by source:
 
-- *K8s*: Kubernetes data - See [https://docs.lacework.com/onboarding/kubernetes-security-overview#kubernetes-security-overview](Kubernetes Security Overview)
-- *K8s/Audit-Logs*: Kuberenetes Audit log data - See [https://docs.lacework.com/onboarding/kubernetes-audit-logs-overview](Kubernetes Audit Logs Overview)
+- *K8s*: Kubernetes data - See [Kubernetes Security Overview](https://docs.lacework.com/onboarding/kubernetes-security-overview#kubernetes-security-overview)
+- *K8s/Audit-Logs*: Kuberenetes Audit log data - See [Kubernetes Audit Logs Overview](https://docs.lacework.com/onboarding/kubernetes-audit-logs-overview)
 
 
 To run the query, and to modify them, do the following:
@@ -19,6 +19,6 @@ To run the query, and to modify them, do the following:
     lacework query create -f K8s/Audit-Logs/APIs/K8sActivityApiDeprecated123.lql
     lacework query run K8sActivityApiDeprecated123 --start "-1w@w" --end "@w"
 
-For more information about LQL, check the [https://docs.lacework.com/lql/lql-overview](LQL overview).
+For more information about LQL, check the [LQL overview](https://docs.lacework.com/lql/lql-overview).
 
 PRs for new queries are welcome!
