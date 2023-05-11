@@ -1,51 +1,51 @@
 queryId: K8sActivityApiRemoved122
 queryText: |-
-{
-  source {
-    LW_ACT_K8S_AUDIT
+  {
+    source {
+      LW_ACT_K8S_AUDIT
+    }
+    filter {
+      EVENT_JSON:requestURI like any(
+        '%/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations%',
+        '%/admissionregistration.k8s.io/v1beta1/watch/validatingwebhookconfigurations%',
+        '%/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations%',
+        '%/admissionregistration.k8s.io/v1beta/watch/mutatingwebhookconfigurations%',
+        '%/apiextensions.k8s.io/vv1beta1/customresourcedefinitions%',
+        '%/apiextensions.k8s.io/v1beta1/watch/customresourcedefinitions%',
+        '%/apiregistration.k8s.io/v1beta1/apiservices%',
+        '%/apiregistration.k8s.io/v1beta1/watch/apiservices%',
+        '%/authentication.k8s.io/v1beta1/tokenreviews',
+        '%/authorization.k8s.io/v1beta1/subjectaccessreviews',
+        '%/authorization.k8s.io/v1beta1/namespaces/%/localsubjectaccessreviews',
+        '%/authorization.k8s.io/v1beta1/selfsubjectaccessreviews',
+        '%/certificates.k8s.io/v1beta1/certificatesigningrequests%',
+        '%/certificates.k8s.io/v1beta1/watch/certificatesigningrequests%',
+        '%/coordination.k8s.io/v1beta1/namespaces/%/leases%',
+        '%/coordination.k8s.io/v1beta1/leases',
+        '%/coordination.k8s.io/v1beta1/watch/namespaces/%/leases%',
+        '%/coordination.k8s.io/v1beta1/watch/leases',
+        '%/extensions/v1beta1/namespaces/%/ingresses%',
+        '%/extensions/v1beta1/ingresses',
+        '%/extensions/v1beta1/watch/namespaces/%/ingresses%',
+        '%/extensions/v1beta1/watch/ingresses',
+        '%/networking.k8s.io/v1beta1/namespaces/%/ingresses%',
+        '%/networking.k8s.io/v1beta1/ingresses',
+        '%/networking.k8s.io/v1beta1/watch/namespaces/%/ingresses%',
+        '%/networking.k8s.io/v1beta1/watch/ingresses') -- APIs removed in K8s 1.22
+      and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+      and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+      and USER_NAME <> 'system:apiserver' -- watch objects
+    }
+    return {
+      USER_ID,
+      USER_NAME,
+      USER_GROUPS,
+      CLOUD_USER,
+      EVENT_URI,
+      EVENT_NAME,
+      EVENT_SOURCE,
+      EVENT_OBJECT,
+      CLUSTER_TYPE,
+      CLUSTER_ID
+    }
   }
-  filter {
-    EVENT_JSON:requestURI like any(
-      '%/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations%',
-      '%/admissionregistration.k8s.io/v1beta1/watch/validatingwebhookconfigurations%',
-      '%/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations%',
-      '%/admissionregistration.k8s.io/v1beta/watch/mutatingwebhookconfigurations%',
-      '%/apiextensions.k8s.io/vv1beta1/customresourcedefinitions%',
-      '%/apiextensions.k8s.io/v1beta1/watch/customresourcedefinitions%',
-      '%/apiregistration.k8s.io/v1beta1/apiservices%',
-      '%/apiregistration.k8s.io/v1beta1/watch/apiservices%',
-      '%/authentication.k8s.io/v1beta1/tokenreviews',
-      '%/authorization.k8s.io/v1beta1/subjectaccessreviews',
-      '%/authorization.k8s.io/v1beta1/namespaces/%/localsubjectaccessreviews',
-      '%/authorization.k8s.io/v1beta1/selfsubjectaccessreviews',
-      '%/certificates.k8s.io/v1beta1/certificatesigningrequests%',
-      '%/certificates.k8s.io/v1beta1/watch/certificatesigningrequests%',
-      '%/coordination.k8s.io/v1beta1/namespaces/%/leases%',
-      '%/coordination.k8s.io/v1beta1/leases',
-      '%/coordination.k8s.io/v1beta1/watch/namespaces/%/leases%',
-      '%/coordination.k8s.io/v1beta1/watch/leases',
-      '%/extensions/v1beta1/namespaces/%/ingresses%',
-      '%/extensions/v1beta1/ingresses',
-      '%/extensions/v1beta1/watch/namespaces/%/ingresses%',
-      '%/extensions/v1beta1/watch/ingresses',
-      '%/networking.k8s.io/v1beta1/namespaces/%/ingresses%',
-      '%/networking.k8s.io/v1beta1/ingresses',
-      '%/networking.k8s.io/v1beta1/watch/namespaces/%/ingresses%',
-      '%/networking.k8s.io/v1beta1/watch/ingresses') -- APIs removed in K8s 1.22
-    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
-    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
-    and USER_NAME <> 'system:apiserver' -- watch objects
-  }
-  return {
-    USER_ID,
-    USER_NAME,
-    USER_GROUPS,
-    CLOUD_USER,
-    EVENT_URI,
-    EVENT_NAME,
-    EVENT_SOURCE,
-    EVENT_OBJECT,
-    CLUSTER_TYPE,
-    CLUSTER_ID
-  }
-}

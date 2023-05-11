@@ -1,30 +1,31 @@
 queryId: K8sActivityApiDeprecated123
 queryText: |-
-{
-  source {
-    LW_ACT_K8S_AUDIT
+  {
+    source {
+      LW_ACT_K8S_AUDIT
+    }
+    filter {
+      EVENT_JSON:requestURI like any(
+        '%/autoscaling/v2beta2/namespaces/%/horizontalpodautoscalers%',
+        '%/autoscaling/v2beta2/horizontalpodautoscalers%',
+        '%/autoscaling/v2beta2/watch/namespaces/%/horizontalpodautoscalers%',
+        '%/autoscaling/v2beta2/watch/horizontalpodautoscalers%',
+        '%/output/v1alpha1/%') -- APIs deprecated in K8s 1.23
+      and USER_NAME <> 'system:kubestore-collector' -- GKE standard user to scale pods
+      and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
+      and USER_NAME <> 'system:kube-controller-manager' -- watch objects
+      and USER_NAME <> 'system:apiserver' -- watch objects
+    }
+    return {
+      USER_ID,
+      USER_NAME,
+      USER_GROUPS,
+      CLOUD_USER,
+      EVENT_URI,
+      EVENT_NAME,
+      EVENT_SOURCE,
+      EVENT_OBJECT,
+      CLUSTER_TYPE,
+      CLUSTER_ID
+    }
   }
-  filter {
-    EVENT_JSON:requestURI like any('%/autoscaling/v2beta2/namespaces/%/horizontalpodautoscalers%',
-      '%/autoscaling/v2beta2/horizontalpodautoscalers%',
-      '%/autoscaling/v2beta2/watch/namespaces/%/horizontalpodautoscalers%',
-      '%/autoscaling/v2beta2/watch/horizontalpodautoscalers%',
-      '%/output/v1alpha1/%') -- APIs deprecated in K8s 1.23
-    and USER_NAME <> 'system:kubestore-collector' -- GKE standard user to scale pods
-    and USER_NAME <> 'system:serviceaccount:lacework:cluster-lacework-agent-sa' -- Lacework c-mode collector
-    and USER_NAME <> 'system:kube-controller-manager' -- watch objects
-    and USER_NAME <> 'system:apiserver' -- watch objects
-  }
-  return {
-    USER_ID,
-    USER_NAME,
-    USER_GROUPS,
-    CLOUD_USER,
-    EVENT_URI,
-    EVENT_NAME,
-    EVENT_SOURCE,
-    EVENT_OBJECT,
-    CLUSTER_TYPE,
-    CLUSTER_ID
-  }
-}
