@@ -1,6 +1,9 @@
 # Lacework Query Language - LQL queries for your Cloud data
+This community-led LQL query repository shows how to track events or configurations from the Cloud data ingested and processed by Lacework. 
 
-This is a repository of LQL queries that shows how to track events or configurations from the Cloud data ingested and processed by Lacework. These queries are NOT part of the default policies shipped by Lacework. They demonstarte how you can get more information about your cloud infrastructure from your data, including going beyond security visibility.
+These queries are NOT part of the default policies shipped by Lacework and are NOT supported by Lacework. Lacework provides no guarantee of quality or functionality.
+
+These queries demonstrate how you can get more information about your cloud infrastructure from your data, including going beyond security visibility.
 
 This repository is organized by source:
 
@@ -21,4 +24,4 @@ To run the query, and to modify them, do the following:
 
 For more information about LQL, check the [LQL overview](https://docs.lacework.com/lql/lql-overview).
 
-PRs for new queries are welcome!
+PRs for new queries are welcome! See [CONTRIBUTE.md](CONTRIBUTE.md) to learn how to contribute your LQL queries.

@@ -18,7 +18,7 @@ This repository contains 2 types of queries:
 1. Deprecated API calls: K8sActivityApiDeprecated123.lql, K8sActivityApiDeprecated124.lql, etc.
 2. Deleted API calls: K8sActivityApiRemoved122.lql, K8sActivityApiRemoved123.lql, etc.
 
-Each query specify the list of queries added or removed in one Kubernetes version:
+Each query specifies the list of APIs added or removed in one Kubernetes version:
 * K8sActivityApiRemoved**122**.lql: APIs deleted in Kubernetes **1.22**
 * K8sActivityApiDeprecated**123**.lql: APIs deprecated in Kubernetes **1.23**
 * etc.
