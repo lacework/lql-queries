@@ -1,0 +1,26 @@
+queryId: MfaCrossAccountRoleEnforced
+queryText: |-
+  {
+      source {
+          LW_CFG_AWS_IAM_ROLES a,
+          array_to_rows(a.RESOURCE_CONFIG:AssumeRolePolicyDocument.Statement) as (Statement)
+      }
+      filter {
+          value_exists(Statement:Principal.AWS)
+          AND (NOT value_exists(Statement:Condition)
+          OR Statement:Condition IS JSON NULL
+          OR Statement:Condition.Bool."aws:MultiFactorAuthPresent" = 'false'
+          OR NOT value_exists(Statement:Condition.StringEquals."sts:ExternalId"))
+      }
+      return distinct {
+          ACCOUNT_ALIAS,
+          ACCOUNT_ID as RESOURCE_KEY,
+          RESOURCE_REGION,
+          RESOURCE_TYPE,
+          SERVICE,
+          RESOURCE_ID,
+          ARN,
+          RESOURCE_TAGS,
+          'Cross-Account Access Lacks External ID or MFA' as COMPLIANCE_FAILURE_REASON
+      }
+  }
